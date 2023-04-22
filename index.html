@@ -5,22 +5,38 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+    
+    <link rel="stylesheet" href="style.css">
     <title>Employee App</title>
 </head>
 <body class="container">
 
     <br>
-
-    <div class="card">
+    <h2>Toggle Dark/Light Mode</h2>
+    <p>Click the button to toggle between dark and light mode for this page.</p>   
+    <button onclick="myFunction()"><img height="100pxs" width="100pxs" src="day-and-night.png"></button> 
+    <script>
+    function myFunction() {
+       let element = document.body;
+       element.classList.toggle("dark-mode");
+       let div = document.getElementById("myDiv");
+  div.classList.toggle("dark-mode");
+}
+    </script>
+    <br>
+    <br>
+    <br>  
+    <div class="card" id="myDiv">
         <div class="card-body">
             <div class="row">
             <div class="col-sm">
-            <div class="form-group">
-                <label for="new-department-name">Department</label>
-                <input type="text" class="form-control" id="new-department-name" >
-                
-            </div>
+                <div class="form-group">
+                    <label for="new-department-name" class="alert alert-secondary">Department</label>
+                    <input type="text" class="form-control" id="new-department-name" placeholder="Department Name" required>
+                    <div class="valid-feedback">Looks good!</div>
+                    <div class="invalid-feedback">Please provide a department name.</div>
+                  </div>
+                  
             </div>
         </div>
         <div>
@@ -32,7 +48,10 @@
     <div id="departments">
 
     </div>
-
+        </head>
+        <body>
+        
+        
     <script src="employee.js"></script>
     <script src="node_modules/jquery/dist/jquery.js"></script>
     <script src="node_modules/bootstrap/dist/js/bootstrap.bundle.js"></script>

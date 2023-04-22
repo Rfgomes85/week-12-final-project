@@ -23,7 +23,6 @@ class Department {
     }
 }
 
-
 let departments = [];
 let departmentId = 0;
 
@@ -34,12 +33,24 @@ onClick('new-department', () => {
 });
 
 function onClick(id, action) {
-let element = document.getElementById(id);
-element.addEventListener('click', action);
-document.getElementById('new-department-name').value='';
-
-return element;
-}
+    let element = document.getElementById(id);
+    element.addEventListener('click', () => {
+      // get the department name input value
+      let departmentName = getValue('new-department-name');
+  
+      // check if the department name is empty
+      if (!departmentName) {
+        alert('Please enter a department name');
+        return;
+      }
+  
+      // call the action function if the department name is not empty
+      action();
+    });
+  
+    return element;
+  }
+  
 
 function getValue(id) {
     return document.getElementById(id).value;
@@ -117,15 +128,21 @@ function createNewEmployeeButton(department) {
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Create';
     btn.onclick = () => {
-        department.employees.push(new Employee(getValue(`name-input-${department.id}`), getValue(`position-input-${department.id}`)));
-        drawDOM();
+        let nameInput = getValue(`name-input-${department.id}`);
+        let positionInput = getValue(`position-input-${department.id}`);
+        if (nameInput !== '' && positionInput !== '') {
+            department.employees.push(new Employee(nameInput, positionInput));
+            drawDOM();
+        } else {
+            alert('Please fill out both Name and Position fields before creating a new employee.');
+        }
     }
     return btn;
 }
 
 function createDepartmentTable(department) {
 let table = document.createElement('table');
-table.setAttribute('class', 'table table-dark table-striped');
+table.setAttribute('class', 'table table-hover table-primary table-striped');
 let row = table.insertRow(0);
 let nameColumn = document.createElement('th');
 let positionColumn = document.createElement('th');
@@ -134,6 +151,7 @@ positionColumn.innerHTML = 'Position';
 row.appendChild(nameColumn);
 row.appendChild(positionColumn);
 let formRow = table.insertRow(1);
+//creating name coloumn for the table
 let nameTh = document.createElement('th');
 let positionTh= document.createElement('th'); 
 let createTh = document.createElement('th');
@@ -141,10 +159,13 @@ let nameInput = document.createElement('input');
 nameInput.setAttribute('id', `name-input-${department.id}`);
 nameInput.setAttribute('type', 'text');
 nameInput.setAttribute('class', 'form-control');
+nameInput.setAttribute('placeholder', 'Name');
+//creating position coloumn for the table
 let positionInput = document.createElement('input'); 
 positionInput.setAttribute('id', `position-input-${department.id}`);
 positionInput.setAttribute('type', 'text');
 positionInput.setAttribute('class', 'form-control');
+positionInput.setAttribute('placeholder', 'Position');
 let newEmployeeButton = createNewEmployeeButton(department);
 nameTh.appendChild(nameInput);
 positionTh.appendChild(positionInput);
@@ -160,4 +181,5 @@ function clearElement(element) {
     while(element.firstChild) {
         element.removeChild(element.firstChild);
     }
+    
 }
