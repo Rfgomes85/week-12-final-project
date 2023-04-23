@@ -16,16 +16,18 @@ class Department {
     addEmployee(employee) {
         this.employees.push(employee);
     }
-    //delete employee from the department class
+    //!delete employee from the department class
     deleteEmployee(employee) {
         let index = this.employees.indexOf(employee);
         this.employees.splice(index, 1);
     }
 }
 
+//where departments will be stored
 let departments = [];
 let departmentId = 0;
 
+//function to add departments to the department array
 onClick('new-department', () => {
     departments.push(new Department(departmentId++, getValue('new-department-name')));
     drawDOM();
@@ -55,7 +57,7 @@ function onClick(id, action) {
 function getValue(id) {
     return document.getElementById(id).value;
 }
-
+// function to manipulate the DOM to create the employee table and put employee information into table
 function drawDOM() {
     let departmentDiv = document.getElementById('departments');
     clearElement(departmentDiv);
@@ -72,7 +74,29 @@ function drawDOM() {
     }
 
 }
-
+// function to save departments to localStorage
+function saveDepartments() {
+    localStorage.setItem('departments', JSON.stringify(departments));
+  }
+  // function to load departments from localStorage
+  function loadDepartments() {
+    let savedDepartments = JSON.parse(localStorage.getItem('departments'));
+    if (savedDepartments) {
+      departments = savedDepartments.map(departmentData => {
+        let department = new Department(departmentData.id, departmentData.name);
+        departmentData.employees.forEach(employeeData => {
+          let employee = new Employee(employeeData.name, employeeData.position);
+          department.addEmployee(employee);
+        });
+        return department;
+      });
+      drawDOM();
+    }
+  }
+  // load saved departments when the page is loaded
+  window.onload = loadDepartments;
+  // save departments when the page is unloaded
+  window.onunload = saveDepartments;
 //creates the employee table when information is added
 function createEmployeeRow(department, table, employee) {
     let row = table.insertRow(2);
@@ -82,7 +106,7 @@ function createEmployeeRow(department, table, employee) {
     actions.appendChild(createDeleteRowButton(department, employee));
     actions.appendChild(createEditRowButton(department, employee));
 }
-//edit button 
+//edit button always you to edit the department and employee
 function createEditRowButton(department, employee) {
     let btn = document.createElement('button');
     btn.className = 'btn btn-success';
@@ -98,7 +122,7 @@ function createEditRowButton(department, employee) {
     };
     return btn;
 }
-//delete button
+//!delete button for employees
 function createDeleteRowButton(department, employee) {
     let btn = document.createElement('button');
     btn.className = 'btn btn-danger';
@@ -110,7 +134,7 @@ function createDeleteRowButton(department, employee) {
     }
     return btn;
 }
-
+//! delete button for department
 function createDeleteDepartmentButton(department) {
     let btn = document.createElement('button');
     btn.className = 'btn btn-danger';
@@ -122,11 +146,12 @@ function createDeleteDepartmentButton(department) {
     }
     return btn;
 }
-
+//Adds new employee
 function createNewEmployeeButton(department) {
     let btn = document.createElement('button')
     btn.className = 'btn btn-primary';
     btn.innerHTML = 'Create';
+    //!When button is clicked if fields are not filled in then it will read alert with message 
     btn.onclick = () => {
         let nameInput = getValue(`name-input-${department.id}`);
         let positionInput = getValue(`position-input-${department.id}`);

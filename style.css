@@ -9,6 +9,7 @@ body {
     background-color: black;
     color: white;
   }
+  
   #myDiv {
     background-color: white;
     color: black;
@@ -19,8 +20,12 @@ body {
     background-color: black;
     color: white;
   }
-
+  
   input:invalid {
     border-color: red;
     background-color: white;
   }
+
+  h2 {
+    color: darkorchid;
+    }
